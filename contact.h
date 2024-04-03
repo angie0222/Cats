@@ -23,14 +23,15 @@ private:
     string email_addr;
 public:
     Email(string type, string email_addr);
-    // TODO: Complete me!
+    void set_contact();
+        // TODO: Complete me!
 };
 
 
 class Phone: public Contact{
 private:
-    // TODO: modify dataType! Can int store 10 digit phone-number? 
-	dataType phone_num; 
+	unsigned long long int phone_num;  // DONE: dataType modified, stores positive int
+
 public:
     Phone(string type, string phone_number);
     // TODO: Complete me!
