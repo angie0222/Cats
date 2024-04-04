@@ -9,7 +9,7 @@ using namespace std;
 
 
 class Contact {
-    // TODO: private or protected? Look at your children!	
+protected:	
 	string type;
 public:
 	virtual void print() = 0;
@@ -24,7 +24,8 @@ private:
 public:
     Email(string type, string email_addr);
     void set_contact();
-        // TODO: Complete me!
+    string get_contact(string style);
+    void print();
 };
 
 
@@ -34,7 +35,9 @@ private:
 
 public:
     Phone(string type, string phone_number);
-    // TODO: Complete me!
+    void set_contact();
+    string get_contact(string style);
+    void print();
 };
 
 #endif
