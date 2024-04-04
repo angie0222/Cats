@@ -68,6 +68,8 @@ void Person::set_person(){
 }
 
 void Person::set_person(string filename){
+     fstream person_file;
+     person_file.open(filename.c_str());
     // reads a Person from a file
     // Look at person_template files as examples.     
     // Phone number in files can have '-' or not.

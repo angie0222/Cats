@@ -1,4 +1,5 @@
-
+#include <iostream>
+#include <string>
 #include "contact.h"
 #include <string>
 #include <iostream>
@@ -10,10 +11,7 @@ Email::Email(string type, string email_addr){
     Contact::type = type;
 }
 
-
-void Email::set_contact(){
-    // TODO: Do not change the prompts!
-	
+void Email::set_contact() {
     cout << "Enter the type of email address: ";
     cin >> this->type;
     cout << "Enter email address: ";
@@ -34,7 +32,6 @@ void Email::print(){
     // Note: get_contact is called with default argument
 	cout << get_contact("full") << endl;
 }
-
 
 Phone::Phone(string type, string num){
     // TODO: It is possible that num includes "-" or not, manage it!
