@@ -10,7 +10,6 @@ Network::Network(){
     count = 0;
 }
 
-
 Network::Network(string fileName){
     // TODO: complete this method!
     // Implement it in one single line!
@@ -20,17 +19,33 @@ Network::Network(string fileName){
 Network::~Network(){ 
 }
 
-Person* Network::search(Person* searchEntry){
+Person* Network::search(Person* searchEntry){ //Natalia
+
+    for (int i = 0; i < persons.size(); ++i) {
+        // Check if the current person's fname and lname match the searchEntry's fname and lname
+        if (persons[i]->getFirstName() == searchEntry->getFN() && persons[i]->getLastName() == searchEntry->getLN()) {
+            // If found, return a pointer to the person
+            return persons[i];
+        }
+    }
+
+    return NULL; // person not found, returning null
+
     // Searches the Network for searchEntry
     // if found, returns a pointer to it, else returns NULL
-    // TODO: Complete this method
 }
 
 
-Person* Network::search(string fname, string lname){
+Person* Network::search(string fname, string lname){ //Natalia
+    //Using 1st method suggested
+    Person* searchPerson = new Person(fname, lname); //makde a new person
+    Person* result = search(searchPerson); //will be searching with the function above
+
+    delete searchPerson;
+    return result;
+
     // New == for Person, only based on fname and lname
     // if found, returns a pointer to it, else returns NULL
-    // TODO: Complete this method
     // Note: two ways to implement this, 1st making a new Person with fname and lname and and using search(Person*), 2nd using fname and lname directly. 
 }
 
@@ -76,14 +91,25 @@ void Network::push_front(Person* newEntry){
 }
 
 
-void Network::push_back(Person* newEntry){
+void Network::push_back(Person* newEntry){ //Natalia
     // Adds a new Person (newEntry) to the back of LL
-    // TODO: Complete this method
+    newEntry -> next = NULL;
+    newEntry -> prev = tail; 
+    
+    if (tail != NULL){
+        tail -> next = newEntry;
+    }
+    else{
+        head = newEntry;
+    }
+    tail = newEntry;
+    count++;
 }
 
 
 bool Network::remove(string fname, string lname){
     // TODO: Complete this method
+
  
 }
 
