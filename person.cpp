@@ -1,6 +1,8 @@
 #include "date.h"
 #include "person.h"
 #include "contact.h"
+#include "misc.h"
+#include <map>
 #include <iostream>
 
 Person::Person(){
@@ -68,8 +70,6 @@ void Person::set_person(){
 }
 
 void Person::set_person(string filename){
-     fstream person_file;
-     person_file.open(filename.c_str());
     // reads a Person from a file
     // Look at person_template files as examples.     
     // Phone number in files can have '-' or not.
@@ -96,6 +96,9 @@ void Person::set_person(string filename){
         file.close();
     }
 }
+void Person::makeFriend(Person* newFriend){
+    myfriends.push_back(newFriend);
+}
 
 bool Person::operator==(const Person& rhs){
     // TODO: Complete this method!
@@ -111,8 +114,32 @@ bool Person::operator!=(const Person& rhs){
 
 void Person::print_person(){
     // Already implemented for you! Do not change!
-	cout << l_name <<", " << f_name << endl;
+	cout << l_name << ", " << f_name << endl;
 	birthdate->print_date();
     phone->print();
     email->print();
+
+    for(int i = 0; i < myfriends.size(); i++){
+        cout << codeName(myfriends[i]->f_name, myfriends[i]->l_name) << " (" << myfriends[i]->f_name << " " << myfriends[i]->l_name << ")" << endl;
+    }
+}
+void Person::pprint_friends(){
+    cout << this->f_name << ", " << this->l_name << endl;
+    cout << "-----------------------------" << endl;
+
+    vector<Person*>::iterator it = myfriends.begin();
+    vector<string> friendIds;
+    map<string, Person*> mapFriend;
+    for(; it != myfriends.end(); ++it){
+        friendIds.push_back(codeName((*it)->f_name, (*it)->l_name));
+        mapFriend.insert(pair<string, Person*>(codeName((*it)->f_name, (*it)->l_name), *it));
+    }
+    sort(friendIds.begin(), friendIds.end());
+
+    vector<string>::iterator it1 = friendIds.begin();
+    for(;it1 != friendIds.end(); ++it1){
+        map<string, Person*>::iterator it2 = mapFriend.find(*it1);
+        cout << (it2)->second->f_name << ", " << (it2)->second->l_name << endl;
+    }
+
 }

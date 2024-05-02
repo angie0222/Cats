@@ -1,4 +1,3 @@
-
 #ifndef MISC_H
 #define MISC_H
 
@@ -7,6 +6,7 @@
 using namespace std;
 
 void printMe(string type);
-
+string codeName(string str1, string str2); 
+void lower(string strtolower);
 
 #endif

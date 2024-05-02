@@ -26,7 +26,9 @@ string Email::get_contact(string style){
     else 
         return email_addr;
 }
-
+string Email::DBcontact(){
+    return "(" + type + ") " + email_addr;
+}
 
 void Email::print(){
     // Note: get_contact is called with default argument
@@ -63,12 +65,14 @@ void Phone::set_contact(){
 string Phone::get_contact(string style){
     // TODO: Complete this method, get hint from Email 
     if (style=="full")
-	    return "(" + type + ") " + to_string(phone_num);
+	    return "(" + type + ") " + phone_num;
     else 
-        return to_string(phone_num);
+        return phone_num;
 }
 
-
+string Phone::DBcontact(){
+    return "(" + type + ") " + phone_num;
+}
 void Phone::print(){
     // Note: get_contact is called with default argument
 	cout << get_contact("full") << endl;

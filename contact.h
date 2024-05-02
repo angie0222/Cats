@@ -22,12 +22,13 @@ public:
 class Email: public Contact {
 private:
     string email_addr;
-
+    
 
 public:
     Email(string type, string email_addr);
     void set_contact();
     string get_contact(string style);
+    string DBcontact();
     void print();
 };
 
@@ -35,12 +36,13 @@ public:
 class Phone: public Contact {
 private:
     string phone_num; // Phone numbers are strings to handle leading zeros and dashes
-
+    string type;
 
 public:
     Phone(string type, string phone_number);
     void set_contact();
     string get_contact(string style);
+    string DBcontact();
     void print();
 };
 

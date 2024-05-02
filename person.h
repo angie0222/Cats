@@ -4,6 +4,7 @@
 #include "date.h"
 #include "contact.h"
 #include "fstream"
+#include <vector>
 class Person{
     friend class Network;
 
@@ -16,6 +17,7 @@ private:
     // the following to attributes are used in the linked list.
     Person* next;
     Person* prev;
+    vector<Person*> myfriends;
 
 public: 
     Person();
@@ -25,6 +27,8 @@ public:
 	void print_person();
 	void set_person();
 	void set_person(string filename);
+    void makeFriend(Person* newFriend);
+    void pprint_friends();
     bool operator==(const Person& rhs);
     bool operator!=(const Person& rhs);
 };

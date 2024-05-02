@@ -3,6 +3,7 @@
 #include <limits>
 #include "misc.h"
 #include <fstream>
+#include <sstream>
 
 Network::Network(){
     head = NULL;
@@ -20,26 +21,12 @@ Network::Network(string fileName){
 Network::~Network(){ 
 }
 
-Person* Network::search(Person* searchEntry){ //Natalia
+Person* Network::search(Person* searchEntry){
 
-    for (int i = 0; i < persons.size(); ++i) {
-        // Check if the current person's fname and lname match the searchEntry's fname and lname
-        if (persons[i]->getFirstName() == searchEntry->getFN() && persons[i]->getLastName() == searchEntry->getLN()) {
-            // If found, return a pointer to the person
-            return persons[i];
-        }
-    }
-
-    return NULL; // person not found, returning null
-
-    // Searches the Network for searchEntry
-    // if found, returns a pointer to it, else returns NULL
-    // TODO: Complete this method
     Person* ptr = head;
-    while(ptr != NULL){
-        if(ptr == searchEntry){
+    while(ptr != NULL) {
+        if(*ptr == *searchEntry) // Assuming the == operator is overloaded for Person
             return ptr;
-        }
         ptr = ptr->next;
     }
     return NULL;
@@ -47,21 +34,10 @@ Person* Network::search(Person* searchEntry){ //Natalia
 
 
 Person* Network::search(string fname, string lname){ //Natalia
-    //Using 1st method suggested
-    Person* searchPerson = new Person(fname, lname); //makde a new person
-    Person* result = search(searchPerson); //will be searching with the function above
-
-    delete searchPerson;
-    return result;
-
-    // New == for Person, only based on fname and lname
-    // if found, returns a pointer to it, else returns NULL
-    // Note: two ways to implement this, 1st making a new Person with fname and lname and and using search(Person*), 2nd using fname and lname directly. 
     Person* ptr = head;
-    while(ptr != NULL){
-        if((ptr->f_name == fname) && (ptr->l_name == lname)){
+    while(ptr != NULL) {
+        if((ptr->f_name == fname) && (ptr->l_name == lname)) // Assuming the == operator is overloaded for Person
             return ptr;
-        }
         ptr = ptr->next;
     }
     return NULL;
@@ -75,8 +51,21 @@ void Network::loadDB(string filename){
         return;
     }
     // Assuming a specific format for each line in the file representing a Person
-    string f_name, l_name, b_date, email, phone;
-    while(file >> f_name >> l_name >> b_date >> email >> phone) {
+    string line, f_name, l_name, b_date, email, phone;
+    while(getline(file, line)){
+        if(line == "--------------------" || line.empty()){
+            continue;
+        }
+        f_name = line;
+        getline(file, l_name);
+        getline(file, b_date);
+        getline(file, email);
+        getline(file, phone);
+        //istringstream iss(line);
+        //string typeE = email.substr(1, email.find(')') - 1);
+        email = email.substr(email.find(')') + 2);
+        //string typeP = phone.substr(1, phone.find(')') - 1);
+        phone = phone.substr(phone.find(')') + 2);
         Person* newPerson = new Person(f_name, l_name, b_date, email, phone);
         push_back(newPerson); // Or push_front, depending on desired list order
     }
@@ -94,8 +83,8 @@ void Network::saveDB(string filename){
     while(ptr != NULL) {
         file << ptr->l_name << ", " << ptr->f_name << endl;
         file << ptr->birthdate->get_date() << endl;
-        file << ptr->phone->get_contact("full") << endl;
-        file << ptr->email->get_contact("full") << endl;
+        file << ptr->phone->DBcontact() << endl;
+        file << ptr->email->DBcontact() << endl;
         file << "-----------------------------" << endl;
         ptr = ptr->next;
     }
@@ -182,6 +171,8 @@ void Network::showMenu(){
         cout << "3. Add a new person \n";
         cout << "4. Remove a person \n";
         cout << "5. Print people with last name  \n";
+        cout << "6. Connect  \n";
+        cout << "7. Print friends of a person \n";
         cout << "\nSelect an option ... ";
         
         if (cin >> opt) {
@@ -282,7 +273,55 @@ void Network::showMenu(){
                 cout << "Person not found! \n";
             }
         }
-        
+        else if(opt==6){
+            cout << "Make friends \n";
+
+            cout << "First friend \n";
+            cout << "First name: ";
+            cin >> fname;
+            cout << "Last name: ";
+            cin >> lname;
+
+            if(search(fname, lname) == NULL){
+                cout << "Person not found! \n";
+            }
+            else{
+                string fname2, lname2;
+                cout << "Second friend \n";
+                cout << "First name: ";
+                cin >> fname2;
+                cout << "Last name: ";
+                cin >> lname2;
+
+                if(search(fname2, lname2) == NULL){
+                    cout << "Person not found! \n";
+                }
+                else{
+                    Person* first = search(fname, lname);
+                    Person* second = search(fname2, lname2);
+                    first->print_person();
+                    second->print_person();
+                    first->makeFriend(second);
+                    second->makeFriend(first);
+                }
+            }
+
+        }
+        else if(opt == 7){
+            cout << "Print friends of a person \n";
+            cout << "First name: ";
+            cin >> fname;
+            cout << "Last name: ";
+            cin >> lname;
+
+            if(search(fname, lname) == NULL){
+                cout << "Person not found! \n";
+            }
+            else{
+                Person* personfriends = search(fname, lname);
+                personfriends->pprint_friends();
+            }
+        }
         else
             cout << "Nothing matched!\n";
         
